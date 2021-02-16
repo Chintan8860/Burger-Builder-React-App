@@ -3,7 +3,8 @@ import Aux from '../../hoc/Auxilary';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal';
-import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-order'
 
 const INGR_PRICES = {
     salad: 10,
@@ -75,7 +76,25 @@ updatePurchaseState (ingredients) {
         this.setState({purchasing : false});
     }
     purchaseContinueHandler = () => {
-    alert('You Continue!');
+    // alert('You Continue!');
+
+    const order = {
+        ingredients: this.state.ingredients,
+        price:this.state.totalPrice,
+        customer:{
+            name: 'Chintan',
+            address:{
+                street: 'row house',
+                zipCode: 394211,
+                country : 'india'
+            },
+            email: 'info@bg.com'
+        },
+        deliveryMethod: 'fastest'
+    }
+    axios.post('/orders.json',order)
+    .then(res => console.log(res))
+    .catch(error => console.log(error));
     }
     render() {
         const disabledInfo = {
